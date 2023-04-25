@@ -98,6 +98,7 @@ function_call: AVG LPAREN args RPAREN
 args: args COMMA NUMBER
     | NUMBER
     | STAR
+    | IDENTIFIER
     ;
 
 

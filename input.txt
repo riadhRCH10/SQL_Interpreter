@@ -1,1 +1,2 @@
-SELECT department, COUNT(*), rr, dd, mm FROM employees GROUP BY department;
+
+DELETE FROM Customers WHERE CustomerName='Alfreds Futterkiste' and qte <= 3
