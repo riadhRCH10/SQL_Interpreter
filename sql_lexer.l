@@ -10,13 +10,25 @@ int yywrap(void);
 
 
 %%
-"DELETE"    	{ printf("%s DELETE\n", yytext); return DELETE; }
+"DELETE"    	{ printf("%s DELETE\n", yytext); return DELETE; } 
 "SELECT"    	{ printf("%s SELECT\n", yytext); return SELECT; }
 "UPDATE"    	{ printf("%s UPDATE\n", yytext); return UPDATE; }
 "CREATE"    	{ printf("%s CREATE\n", yytext); return CREATE; }
 "TABLE"     	{ printf("%s TABLE\n", yytext);  return TABLE; }
+"LIMIT"     	{ printf("%s LIMIT\n", yytext);  return LIMIT; }
 "FROM"     	    { printf("%s FROM\n", yytext);  return FROM; }
 "WHERE"     	{ printf("%s WHERE\n", yytext);  return WHERE; }
+"ORDER BY"     	{ printf("%s ORDER-BY\n", yytext);  return ORDER_BY; }
+"GROUP BY"     	{ printf("%s GROUP-BY\n", yytext);  return GROUP_BY; }
+"AVG"     	    { printf("%s AVG\n", yytext);  return AVG; }
+"COUNT"     	{ printf("%s COUNT\n", yytext);  return COUNT; }
+"FIRST"     	{ printf("%s FIRST\n", yytext);  return FIRST; }
+"LAST"      	{ printf("%s LAST\n", yytext);  return LAST; }
+"MAX"       	{ printf("%s MAX\n", yytext);  return MAX; }
+"MIN"     	    { printf("%s MIN\n", yytext);  return MIN; }
+"SUM"     	    { printf("%s SUM\n", yytext);  return SUM; }
+"ASC"     	    { printf("%s ASC\n", yytext);  return ASC; }
+"DESC"     	    { printf("%s DESC\n", yytext);  return DESC; }
 "PRIMARY KEY" 	{ printf("%s PRIMARY_KEY\n", yytext); return PRIMARY_KEY; }
 "VARCHAR"		{ printf("%s DATATYPE\n", yytext); return DATATYPE; }
 "DATE"			{ printf("%s DATATYPE\n", yytext); return DATATYPE; }

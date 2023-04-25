@@ -19,7 +19,8 @@ int valid_create = 1;
 
 %token <strval> IDENTIFIER
 %token CREATE TABLE LPAREN RPAREN COMMA SEMICOLON INT VARCHAR DELETE FROM WHERE UPDATE PRIMARY_KEY DATATYPE NUMBER
-%token EQ NE LT LE GT GE LIKE IN BETWEEN STRING_VALUE AND OR NOT STAR SELECT
+%token EQ NE LT LE GT GE LIKE IN BETWEEN STRING_VALUE AND OR NOT STAR 
+%token SELECT ORDER_BY GROUP_BY ASC DESC LIMIT AVG COUNT FIRST LAST MAX MIN SUM
 
 %%
 
@@ -30,13 +31,43 @@ query_statement: delete_statement
 
 /* select_statement */
 
-select_statement: SELECT identifier_list FROM IDENTIFIER  { printf("select query valid\n"); }
-                | SELECT identifier_list FROM IDENTIFIER WHERE condition_list { printf("select query valid\n"); } //where
+select_statement: SELECT identifier_list FROM IDENTIFIER where_clause groupby_clause orderby_clause limit_clause { printf("select query valid\n"); }
+
+where_clause: %empty | WHERE condition_list
+    ;
+
+groupby_clause: %empty | GROUP_BY identifier_list
+    ;
+
+orderby_clause: %empty | ORDER_BY identifier_list order_direction
+    ;
+
+order_direction: %empty | ASC | DESC
+    ;
+
+limit_clause: %empty | LIMIT NUMBER
+    ;
 
 identifier_list: IDENTIFIER
                 | STAR
+                | function_call
                 | IDENTIFIER COMMA identifier_list
                 ;
+
+function_call: AVG LPAREN args RPAREN
+             | COUNT LPAREN args RPAREN
+             | SUM LPAREN args RPAREN
+             | FIRST LPAREN args RPAREN
+             | LAST LPAREN args RPAREN
+             | MIN LPAREN args RPAREN
+             | MAX LPAREN args RPAREN
+             ;
+
+args: args COMMA NUMBER
+    | NUMBER
+    | STAR
+    ;
+
 
 /* delete_statement */
 

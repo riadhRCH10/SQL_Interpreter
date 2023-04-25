@@ -24,6 +24,11 @@ SELECT * FROM employees WHERE department = 'Sales';
 
 select * from enseignant where class = 'IDISC1' AND NOM LIKE 'R*'
 
+SELECT * FROM employees ORDER BY last_name ASC;
+
+SELECT department, COUNT(*) FROM employees GROUP BY department;
+
+
 
 
 ******** TODO *****

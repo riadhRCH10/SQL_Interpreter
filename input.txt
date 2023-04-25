@@ -1,1 +1,1 @@
-SELECT * FROM employees ORDER BY last_name ASC;
+SELECT department, COUNT(*) FROM employees GROUP BY department;
