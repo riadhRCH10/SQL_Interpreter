@@ -11,6 +11,7 @@ int yywrap(void);
 
 %%
 "DELETE"    	{ printf("%s DELETE\n", yytext); return DELETE; }
+"SELECT"    	{ printf("%s SELECT\n", yytext); return SELECT; }
 "UPDATE"    	{ printf("%s UPDATE\n", yytext); return UPDATE; }
 "CREATE"    	{ printf("%s CREATE\n", yytext); return CREATE; }
 "TABLE"     	{ printf("%s TABLE\n", yytext);  return TABLE; }
@@ -33,11 +34,12 @@ int yywrap(void);
 "IN"            { printf("%s IN\n", yytext); return IN; }
 "BETWEEN"       { printf("%s BETWEEN\n", yytext); return BETWEEN; }
 ","      		{ printf("%s COMMA\n", yytext); return COMMA; }
+"*"      		{ printf("%s STAR\n", yytext); return STAR; }
 "("      		{ printf("%s LPAREN\n", yytext); return LPAREN; }
 ")"      		{ printf("%s RPAREN\n", yytext); return RPAREN; }
 [0-9]+      	{ printf("%s NUMBER\n", yytext); return NUMBER; }
-\"([^\\\n]|(\\.))*\" { yylval.strval = strdup(yytext); return STRING_VALUE; }
-\'([^\\\n]|(\\.))*\' { yylval.strval = strdup(yytext); return STRING_VALUE; }
+\"[^\"]*\"      { printf("%s STRING\n", yytext); yylval.strval = strdup(yytext); return STRING_VALUE; }
+\'[^\']*\'      { printf("%s STRING\n", yytext); yylval.strval = strdup(yytext); return STRING_VALUE; }
 [A-Za-z_][A-Za-z0-9_]* 	{ yylval.strval = strdup(yytext); printf("%s IDENTIFIER\n", yytext); return IDENTIFIER; }
 [ \t\n]     	{ /* ignore whitespace */ }
 .           	{ printf("%s %s\n", yytext, yytext); }

@@ -19,12 +19,24 @@ int valid_create = 1;
 
 %token <strval> IDENTIFIER
 %token CREATE TABLE LPAREN RPAREN COMMA SEMICOLON INT VARCHAR DELETE FROM WHERE UPDATE PRIMARY_KEY DATATYPE NUMBER
-%token EQ NE LT LE GT GE LIKE IN BETWEEN STRING_VALUE AND OR NOT
+%token EQ NE LT LE GT GE LIKE IN BETWEEN STRING_VALUE AND OR NOT STAR SELECT
 
 %%
 
 query_statement: delete_statement
                 | create_statement
+                | select_statement
+                ;
+
+/* select_statement */
+
+select_statement: SELECT identifier_list FROM IDENTIFIER  { printf("select query valid\n"); }
+                | SELECT identifier_list FROM IDENTIFIER WHERE condition_list { printf("select query valid\n"); } //where
+
+identifier_list: IDENTIFIER
+                | STAR
+                | IDENTIFIER COMMA identifier_list
+                ;
 
 /* delete_statement */
 
