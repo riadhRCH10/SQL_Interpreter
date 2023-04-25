@@ -1,0 +1,15 @@
+CREATe TABLE PERSONNE (
+    nom VARCHAR,
+    prenom VARCHAR,
+    id int primary key
+)
+
+
+****** DELETE *****
+
+DELETE FROM Customers WHERE CustomerName='Alfreds Futterkiste'
+
+DELETE FROM employees WHERE last_name = 'Johnson' AND employee_id >= 80;
+
+DELETE FROM birthdays
+WHERE id IN (1, 3, 5);

@@ -1,0 +1,5 @@
+CREATe TABLE PERSONNE (
+    nom VARCHAR,
+    prenom VARCHAR,
+    id int primary key
+)
