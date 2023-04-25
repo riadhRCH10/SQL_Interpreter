@@ -10,7 +10,8 @@ extern int yylineno;
 void yyerror(const char* s);
 int yyparse();
 
-int valid_create = 1;
+//int valid_create = 1;
+int selected_field_count = 0;
 %}
 
 %union {
@@ -43,7 +44,10 @@ operation: EQ
 
 /* select_statement */
 
-select_statement: SELECT identifier_list FROM IDENTIFIER where_clause groupby_clause orderby_clause limit_clause { printf("select query valid\n"); }
+select_statement: SELECT select_list FROM IDENTIFIER where_clause groupby_clause orderby_clause limit_clause {
+                    printf("select request valid. Selected field count: %d\n", selected_field_count);
+                    selected_field_count = 0;
+                }
 
 where_clause: %empty | WHERE condition_list
     ;
@@ -59,6 +63,22 @@ order_direction: %empty | ASC | DESC
 
 limit_clause: %empty | LIMIT NUMBER
     ;
+
+select_list_item: IDENTIFIER
+                {
+                    selected_field_count++;
+                }
+                | IDENTIFIER '.' IDENTIFIER
+                {
+                    selected_field_count++;
+                }
+                | function_call
+                ;
+
+select_list: STAR
+           | select_list_item
+           | select_list COMMA select_list_item
+           ;
 
 identifier_list: IDENTIFIER
                 | STAR
@@ -151,11 +171,11 @@ int main(int argc, char** argv) {
 
     yyparse();
 
-    if (valid_create) {
+    //if (valid_create) {
         //printf("CREATE query is valid!\n");
-    } else {
+    //} else {
         //printf("CREATE query is invalid!\n");
-    }
+    //}
 
     fclose(yyin);
     return 0;
