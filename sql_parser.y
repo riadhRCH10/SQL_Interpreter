@@ -18,16 +18,28 @@ int valid_create = 1;
 }
 
 %token <strval> IDENTIFIER
-%token CREATE TABLE LPAREN RPAREN COMMA SEMICOLON INT VARCHAR DELETE FROM WHERE UPDATE PRIMARY_KEY DATATYPE NUMBER
+%token CREATE TABLE LPAREN RPAREN COMMA SEMICOLON INT VARCHAR DELETE FROM WHERE PRIMARY_KEY DATATYPE NUMBER
 %token EQ NE LT LE GT GE LIKE IN BETWEEN STRING_VALUE AND OR NOT STAR 
-%token SELECT ORDER_BY GROUP_BY ASC DESC LIMIT AVG COUNT FIRST LAST MAX MIN SUM
+%token SELECT ORDER_BY GROUP_BY ASC DESC LIMIT AVG COUNT FIRST LAST MAX MIN SUM 
+%token UPDATE SET
 
 %%
 
 query_statement: delete_statement
                 | create_statement
                 | select_statement
+                | update_statement
                 ;
+
+/* update_statement */
+
+update_statement: UPDATE IDENTIFIER SET operation_list WHERE condition_list { printf("update query valid\n"); }
+
+operation_list: IDENTIFIER operation value
+              | IDENTIFIER operation value COMMA operation_list
+
+operation: EQ 
+         | STAR
 
 /* select_statement */
 

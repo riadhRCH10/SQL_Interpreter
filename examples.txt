@@ -9,24 +9,33 @@ CREATe TABLE PERSONNE (
 
 ****** DELETE *****
 
-DELETE FROM Customers WHERE CustomerName='Alfreds Futterkiste'
+DELETE FROM Customers WHERE CustomerName='Alfreds Futterkiste' // conditions
 
-DELETE FROM employees WHERE last_name = 'Johnson' AND employee_id >= 80;
+DELETE FROM employees WHERE last_name = 'Johnson' AND employee_id >= 80;  //arithm and lojic operators
 
 DELETE FROM birthdays
-WHERE id IN (1, 3, 5);
+WHERE id IN (1, 3, 5); //range
 
 ****** SELECT ******
 
-SELECT first_name, last_name FROM employees;
+SELECT first_name, last_name FROM employees;    ///multiple fields
 
-SELECT * FROM employees WHERE department = 'Sales';
+SELECT * FROM employees WHERE department = 'Sales';  // conditions
 
-select * from enseignant where class = 'IDISC1' AND NOM LIKE 'R*'
+select * from enseignant where class = 'IDISC1' AND NOM LIKE 'R*'  //arithm and lojic operators
 
-SELECT * FROM employees ORDER BY last_name ASC;
+SELECT * FROM employees ORDER BY last_name ASC; // support WHERE GROUPBY ORDERBY LIMIT
 
-SELECT department, COUNT(*) FROM employees GROUP BY department;
+SELECT department, COUNT(*) FROM employees GROUP BY department; // SUPPORT FUNCTIONS  AVG COUNT FIRST LAST MAX MIN SUM
+
+**** update ******
+
+UPDATE employees SET salary = 60000 WHERE employee_id = 1234;
+
+UPDATE employees SET salary = 60000, department = 'Marketing' WHERE employee_id = 1234;
+
+UPDATE employees SET department = 'Marketing' WHERE salary >= 50000;
+
 
 
 

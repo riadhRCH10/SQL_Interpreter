@@ -17,6 +17,8 @@ int yywrap(void);
 "TABLE"     	{ printf("%s TABLE\n", yytext);  return TABLE; }
 "LIMIT"     	{ printf("%s LIMIT\n", yytext);  return LIMIT; }
 "FROM"     	    { printf("%s FROM\n", yytext);  return FROM; }
+"UPDATE"     	{ printf("%s UPDATE\n", yytext);  return UPDATE; } 
+"SET"     	    { printf("%s SET\n", yytext);  return SET; } 
 "WHERE"     	{ printf("%s WHERE\n", yytext);  return WHERE; }
 "ORDER BY"     	{ printf("%s ORDER-BY\n", yytext);  return ORDER_BY; }
 "GROUP BY"     	{ printf("%s GROUP-BY\n", yytext);  return GROUP_BY; }
