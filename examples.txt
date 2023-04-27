@@ -50,4 +50,8 @@ DELETE b, v
  WHERE b.date = 1976-09-28;      // ALIAS
 
  DELETE FROM birthdays  
-WHERE id BETWEEN 2 AND 5      //BETWEEN
+WHERE id BETWEEN 2 AND 5      //BETWEEN*
+
+//constraints 
+
+// VARCHAR(20)

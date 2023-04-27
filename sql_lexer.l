@@ -3,6 +3,12 @@
 #undef yywrap
 int yywrap(void);
 
+
+extern int yylineno;
+
+int yylex(void);
+void yyerror(const char*);
+
 %}
 
 %option noyywrap
@@ -55,6 +61,7 @@ int yywrap(void);
 \"[^\"]*\"      { printf("%s STRING\n", yytext); yylval.strval = strdup(yytext); return STRING_VALUE; }
 \'[^\']*\'      { printf("%s STRING\n", yytext); yylval.strval = strdup(yytext); return STRING_VALUE; }
 [A-Za-z_][A-Za-z0-9_]* 	{ yylval.strval = strdup(yytext); printf("%s IDENTIFIER\n", yytext); return IDENTIFIER; }
+\n        { yylineno++; }
 [ \t\n]     	{ /* ignore whitespace */ }
 .           	{ printf("%s %s\n", yytext, yytext); }
 %%
