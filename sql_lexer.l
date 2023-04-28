@@ -35,15 +35,26 @@ void yyerror(const char*);
 "MAX"       	{ printf("%s MAX\n", yytext);  return MAX; }
 "MIN"     	    { printf("%s MIN\n", yytext);  return MIN; }
 "SUM"     	    { printf("%s SUM\n", yytext);  return SUM; }
+"UNIQUE"     	{ printf("%s UNIQUE\n", yytext);  return UNIQUE; }
+"FOREIGN KEY"   { printf("%s FOREIGN KEY\n", yytext);  return FOREIGN_KEY; }
+"REFERENCES"    { printf("%s REFERENCES\n", yytext);  return REFERENCES; }
+"ON DELETE"     { printf("%s ON DELETE\n", yytext);  return ON_DELETE; }
+"ON UPDATE"     { printf("%s ON UPDATE\n", yytext);  return ON_UPDATE; }
+"CASCADE"     	{ printf("%s CASCADE\n", yytext);  return CASCADE; }
+"SET NULL"     	{ printf("%s SET NULL\n", yytext);  return SET_NULL; }
+"SET DEFAULT"   { printf("%s SET DEFAULT\n", yytext);  return SET_DEFAULT; }
 "ASC"     	    { printf("%s ASC\n", yytext);  return ASC; }
 "DESC"     	    { printf("%s DESC\n", yytext);  return DESC; }
 "PRIMARY KEY" 	{ printf("%s PRIMARY_KEY\n", yytext); return PRIMARY_KEY; }
 "VARCHAR"		{ printf("%s DATATYPE\n", yytext); return DATATYPE; }
+"DECIMAL"		{ printf("%s DECIMAL\n", yytext); return DECIMAL; }
+"INTEGER"		{ printf("%s DATATYPE\n", yytext); return DATATYPE; }
 "DATE"			{ printf("%s DATATYPE\n", yytext); return DATATYPE; }
 "INT"			{ printf("%s DATATYPE\n", yytext); return DATATYPE; }
 "AND"           { printf("%s AND\n", yytext); return AND; }
 "NOT"           { printf("%s NOT\n", yytext); return NOT; }
 "OR"            { printf("%s OR\n", yytext); return OR; }
+"AS"            { printf("%s AS\n", yytext); return AS; }
 "="             { printf("%s EQ\n", yytext); return EQ; }
 "!="            { printf("%s NE\n", yytext); return NE; }
 "<"             { printf("%s LT\n", yytext); return LT; }

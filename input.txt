@@ -1,5 +1,1 @@
-CREATe TABLE PERSONNE (
-    nom VARCHAR,
-    prenom VARCHAR,
-    id int primary,
-) 
+DELETE b, v FROM birthdays b WHERE b = '1976-09-28';

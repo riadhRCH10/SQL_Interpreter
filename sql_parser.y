@@ -20,9 +20,9 @@ int selected_field_count = 0;
 
 %token <strval> IDENTIFIER
 %token CREATE TABLE LPAREN RPAREN COMMA SEMICOLON INT VARCHAR DELETE FROM WHERE PRIMARY_KEY DATATYPE NUMBER
-%token EQ NE LT LE GT GE LIKE IN BETWEEN STRING_VALUE AND OR NOT STAR 
+%token EQ NE LT LE GT GE LIKE IN BETWEEN STRING_VALUE AND OR NOT STAR DECIMAL
 %token SELECT ORDER_BY GROUP_BY ASC DESC LIMIT AVG COUNT FIRST LAST MAX MIN SUM 
-%token UPDATE SET
+%token UPDATE SET AS UNIQUE FOREIGN_KEY REFERENCES ON_DELETE ON_UPDATE CASCADE SET_NULL SET_DEFAULT
 
 %%
 
@@ -44,7 +44,7 @@ operation: EQ
 
 /* select_statement */
 
-select_statement: SELECT select_list FROM IDENTIFIER where_clause groupby_clause orderby_clause limit_clause {
+select_statement: SELECT select_list FROM table_list where_clause groupby_clause orderby_clause limit_clause {
                     printf("select request valid. Selected field count: %d\n", selected_field_count);
                     selected_field_count = 0;
                 }
@@ -72,7 +72,7 @@ select_list_item: IDENTIFIER
                 {
                     selected_field_count++;
                 }
-                | function_call
+                | function_call AS IDENTIFIER
                 ;
 
 select_list: STAR
@@ -104,8 +104,12 @@ args: args COMMA NUMBER
 
 /* delete_statement */
 
-delete_statement: DELETE FROM IDENTIFIER WHERE condition_list { printf("delete query valid\n"); }
+delete_statement: DELETE delete_list FROM table_list WHERE condition_list { printf("delete query valid\n"); }
                 ;
+
+delete_list:  %empty 
+            | IDENTIFIER
+            | IDENTIFIER COMMA delete_list
 
 condition_list: condition { }
                | condition_list OR condition { }
@@ -113,6 +117,7 @@ condition_list: condition { }
                ;
 
 condition: IDENTIFIER op value { }
+          | IDENTIFIER BETWEEN value AND value
           | LPAREN condition RPAREN { }
           | NOT condition { }
           ;
@@ -125,7 +130,6 @@ op: EQ { }
   | GE { }
   | LIKE { }
   | IN { }
-  | BETWEEN { }
   ;
 
 value: STRING_VALUE { }
@@ -138,6 +142,11 @@ value_list: value { }
            | value COMMA value_list { }
            ;
 
+table_list: IDENTIFIER
+          | IDENTIFIER IDENTIFIER
+          | IDENTIFIER COMMA table_list
+          | IDENTIFIER IDENTIFIER COMMA table_list
+
 /* create_statement */
 
 create_statement: CREATE TABLE IDENTIFIER LPAREN column_def_list RPAREN { printf("create query valid\n"); }
@@ -147,10 +156,27 @@ column_def_list: column_def { }
                | column_def_list COMMA column_def { }
                ;
 
-column_def: IDENTIFIER DATATYPE { }
-            | IDENTIFIER DATATYPE PRIMARY_KEY { }
-          ;
+column_def:   IDENTIFIER data_type { }
+            | IDENTIFIER data_type PRIMARY_KEY { }
+            | IDENTIFIER data_type REFERENCES IDENTIFIER LPAREN IDENTIFIER RPAREN { }
+            | primary_key_constraint { }
+            | unique_constraint { }
+            | foreign_key_constraint { }
+            ;
 
+primary_key_constraint: PRIMARY_KEY { }
+                      ;
+
+unique_constraint: UNIQUE { }
+                  | UNIQUE LPAREN IDENTIFIER RPAREN {}
+                 ;
+
+foreign_key_constraint: FOREIGN_KEY LPAREN IDENTIFIER RPAREN REFERENCES IDENTIFIER LPAREN IDENTIFIER RPAREN   { }
+                      ;
+
+data_type: DATATYPE {}
+        | DATATYPE LPAREN NUMBER RPAREN {}
+        | DECIMAL LPAREN NUMBER COMMA NUMBER RPAREN {}
 
 %%
 
