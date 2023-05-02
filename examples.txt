@@ -10,7 +10,7 @@ CREATE TABLE orders (
     order_id INTEGER PRIMARY KEY,
     customer_id INTEGER,
     order_date DATE,
-    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)   //constraints
+    FOREIGN KEY customer_id REFERENCES customers(customer_id)   //constraints
 );
 
 CREATE TABLE products (

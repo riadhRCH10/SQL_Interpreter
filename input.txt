@@ -1,1 +1,3 @@
-DELETE b, v FROM birthdays b WHERE b = '1976-09-28';
+UPDATE employees etudiants
+SET salary = 60000, department = 'Marketing' 
+WHERE employee_id = 1234

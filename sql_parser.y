@@ -73,6 +73,7 @@ select_list_item: IDENTIFIER
                     selected_field_count++;
                 }
                 | function_call AS IDENTIFIER
+                | function_call
                 ;
 
 select_list: STAR
@@ -164,14 +165,14 @@ column_def:   IDENTIFIER data_type { }
             | foreign_key_constraint { }
             ;
 
-primary_key_constraint: PRIMARY_KEY { }
+primary_key_constraint: PRIMARY_KEY LPAREN IDENTIFIER RPAREN { }
                       ;
 
 unique_constraint: UNIQUE { }
                   | UNIQUE LPAREN IDENTIFIER RPAREN {}
                  ;
 
-foreign_key_constraint: FOREIGN_KEY LPAREN IDENTIFIER RPAREN REFERENCES IDENTIFIER LPAREN IDENTIFIER RPAREN   { }
+foreign_key_constraint: FOREIGN_KEY IDENTIFIER REFERENCES IDENTIFIER LPAREN IDENTIFIER RPAREN   { }
                       ;
 
 data_type: DATATYPE {}
