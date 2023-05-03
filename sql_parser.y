@@ -34,20 +34,22 @@ query_statement: delete_statement
 
 /* update_statement */
 
-update_statement: UPDATE IDENTIFIER SET operation_list WHERE condition_list { printf("update query valid\n"); }
+update_statement: UPDATE IDENTIFIER SET operation_list WHERE condition_list { printf("la requête UPDATE est valide\n"); }
+                | UPDATE IDENTIFIER error operation_list WHERE condition_list { printf("lexème 'SET' manquant\n"); }
+                | UPDATE error SET operation_list WHERE condition_list { printf("Un nom de table est requis après le lexème 'UPDATE'\n"); }
 
-operation_list: IDENTIFIER operation value
-              | IDENTIFIER operation value COMMA operation_list
-
-operation: EQ 
-         | STAR
+operation_list: IDENTIFIER op value
+              | IDENTIFIER IN value_list
+              | IDENTIFIER op value COMMA operation_list
+              | IDENTIFIER IN value_list COMMA operation_list
 
 /* select_statement */
 
 select_statement: SELECT select_list FROM table_list where_clause groupby_clause orderby_clause limit_clause {
-                    printf("select request valid. Selected field count: %d\n", selected_field_count);
+                    printf("la requête SELECT est valide. Nombre de champs sélectionnés: %d\n", selected_field_count);
                     selected_field_count = 0;
                 }
+                | SELECT select_list error table_list where_clause groupby_clause orderby_clause limit_clause { printf("lexème 'FROM' manquant\n"); return 0; } 
 
 where_clause: %empty | WHERE condition_list
     ;
@@ -94,17 +96,23 @@ function_call: AVG LPAREN args RPAREN
              | LAST LPAREN args RPAREN
              | MIN LPAREN args RPAREN
              | MAX LPAREN args RPAREN
+             | AVG LPAREN args error { printf("parenthèse manquante\n"); return 0; } 
+             | COUNT LPAREN args error { printf("parenthèse manquante\n"); return 0; }
+             | SUM LPAREN args error { printf("parenthèse manquante\n"); return 0; }
+             | FIRST LPAREN args error { printf("parenthèse manquante\n"); return 0; }
+             | LAST LPAREN args error { printf("parenthèse manquante\n"); return 0; }
+             | MIN LPAREN args error { printf("parenthèse manquante\n"); return 0; }
+             | MAX LPAREN args error { printf("parenthèse manquante\n"); return 0; }
              ;
 
-args: NUMBER
+args: IDENTIFIER
     | STAR
-    | IDENTIFIER
     ;
 
 
 /* delete_statement */
 
-delete_statement: DELETE delete_list FROM table_list WHERE condition_list { printf("delete query valid\n"); }
+delete_statement: DELETE delete_list FROM table_list WHERE condition_list { printf("la requête DELETE est valide\n"); }
                 ;
 
 delete_list:  %empty 
@@ -117,8 +125,10 @@ condition_list: condition { }
                ;
 
 condition: IDENTIFIER op value { }
+          | IDENTIFIER IN value_list { }
           | IDENTIFIER BETWEEN value AND value
           | LPAREN condition RPAREN { }
+          | LPAREN condition error { printf("parenthèse manquante\n"); return 0; }
           | NOT condition { }
           ;
 
@@ -129,27 +139,37 @@ op: EQ { }
   | GT { }
   | GE { }
   | LIKE { }
-  | IN { }
   ;
+
+value_list: LPAREN string_list RPAREN { }
+          | LPAREN number_list RPAREN { }
+          | LPAREN number_list error { printf("parenthèse manquante\n"); return 0; }
+          | LPAREN string_list error { printf("parenthèse manquante\n"); return 0; }
+          ;
 
 value: STRING_VALUE { }
      | NUMBER { }
-     | IDENTIFIER { }
-     | LPAREN value_list RPAREN { }
      ;
 
-value_list: value { }
-           | value COMMA value_list { }
+string_list: STRING_VALUE { }
+           | STRING_VALUE COMMA string_list { }
+           ;
+
+number_list: NUMBER { }
+           | NUMBER COMMA number_list { }
            ;
 
 table_list: IDENTIFIER
           | IDENTIFIER IDENTIFIER
           | IDENTIFIER COMMA table_list
           | IDENTIFIER IDENTIFIER COMMA table_list
+          | error { printf("Un nom de table est requis\n"); return 0; }
 
 /* create_statement */
 
-create_statement: CREATE TABLE IDENTIFIER LPAREN column_def_list RPAREN { printf("create query valid\n"); }
+create_statement: CREATE TABLE IDENTIFIER LPAREN column_def_list RPAREN { printf("la requête CREATE est valide\n"); }
+                | CREATE TABLE IDENTIFIER LPAREN column_def_list error { printf("parenthèse manquante\n"); return 0; }
+                | CREATE TABLE error LPAREN column_def_list RPAREN { printf("Un nom de table est requis\n"); return 0; }
                 ;
 
 column_def_list: column_def { }
@@ -159,28 +179,34 @@ column_def_list: column_def { }
 column_def:   IDENTIFIER data_type { }
             | IDENTIFIER data_type PRIMARY_KEY { }
             | IDENTIFIER data_type REFERENCES IDENTIFIER LPAREN IDENTIFIER RPAREN { }
+            | IDENTIFIER data_type REFERENCES IDENTIFIER LPAREN IDENTIFIER error { printf("parenthèse manquante\n"); return 0; }
             | primary_key_constraint { }
             | unique_constraint { }
             | foreign_key_constraint { }
             ;
 
 primary_key_constraint: CONSTRAINT IDENTIFIER PRIMARY_KEY LPAREN IDENTIFIER RPAREN { }
+                      | CONSTRAINT IDENTIFIER PRIMARY_KEY LPAREN IDENTIFIER error { printf("parenthèse manquante\n"); return 0; }
                       ;
 
 unique_constraint: CONSTRAINT IDENTIFIER UNIQUE LPAREN IDENTIFIER RPAREN {}
+                  | CONSTRAINT IDENTIFIER UNIQUE LPAREN IDENTIFIER error { printf("parenthèse manquante\n"); return 0; }
                  ;
 
 foreign_key_constraint: CONSTRAINT IDENTIFIER FOREIGN_KEY IDENTIFIER REFERENCES IDENTIFIER LPAREN IDENTIFIER RPAREN   { }
+                      | CONSTRAINT IDENTIFIER FOREIGN_KEY IDENTIFIER REFERENCES IDENTIFIER LPAREN IDENTIFIER error   { printf("parenthèse manquante\n"); return 0; }
                       ;
 
 data_type: DATATYPE {}
         | DATATYPE LPAREN NUMBER RPAREN {}
         | DECIMAL LPAREN NUMBER COMMA NUMBER RPAREN {}
+        | DATATYPE LPAREN NUMBER error { printf("parenthèse manquante\n"); return 0; }
+        | DECIMAL LPAREN NUMBER COMMA NUMBER error { printf("parenthèse manquante\n"); return 0; }
 
 %%
 
 void yyerror(const char* s) {
-    fprintf(stderr, "Syntax error on line %d: %s\n", yylineno, s);
+    fprintf(stderr, "Syntax error on line %d \n", yylineno);
 }
 
 int main(int argc, char** argv) {

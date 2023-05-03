@@ -63,9 +63,29 @@ UPDATE employees SET department = 'Marketing' WHERE salary >= 50000;
 
 
 
+***** errors ****
 
+UPDATE SET salary = 60000 WHERE employee_id = 1234;
 
+UPDATE test salary = 60000 WHERE employee_id = 1234;
 
-****** todo
-improve args
-improve value_list
+DELETE FROM Customers WHERE (CustomerName='Alfreds Futterkiste' and (t=23)
+
+DELETE b, v FROM  WHERE b = '1976-09-28';
+
+SELECT * TT employees WHERE department = 'Sales';
+
+CREATE TABLE  (
+    product_id INTEGER PRIMARY KEY,
+    product_name VARCHAR(50),
+    price DECIMAL(10,2),
+    constraint uk UNIQUE (product_name)
+);
+
+CREATE TABLE products (
+    product_id INTEGER PRIMARY KEY,
+    product_name VARCHAR(50),
+    price DECIMAL(10,2),
+    constraint uk UNIQUE (product_name)
+;
+

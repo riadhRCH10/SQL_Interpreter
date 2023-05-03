@@ -1,5 +1,6 @@
-CREATe TABLE PERSONNE (
-    nom VARCHAR,
-    prenom VARCHAR,
-    id int primary key
-)
+CREATE TABLE products (
+    product_id INTEGER PRIMARY KEY,
+    product_name VARCHAR(50),
+    price DECIMAL(10,2),
+    constraint uk UNIQUE (product_name)
+;
