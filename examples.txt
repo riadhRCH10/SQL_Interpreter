@@ -10,14 +10,14 @@ CREATE TABLE orders (
     order_id INTEGER PRIMARY KEY,
     customer_id INTEGER,
     order_date DATE,
-    FOREIGN KEY customer_id REFERENCES customers(customer_id)   //constraints
+    constraint fk FOREIGN KEY customer_id REFERENCES customers(customer_id)  
 );
 
 CREATE TABLE products (
     product_id INTEGER PRIMARY KEY,
     product_name VARCHAR(50),
     price DECIMAL(10,2),
-    UNIQUE (product_name)
+    constraint uk UNIQUE (product_name)
 );
 
 
@@ -66,3 +66,6 @@ UPDATE employees SET department = 'Marketing' WHERE salary >= 50000;
 
 
 
+****** todo
+improve args
+improve value_list

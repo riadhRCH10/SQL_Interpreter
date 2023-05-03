@@ -1,3 +1,5 @@
-UPDATE employees etudiants
-SET salary = 60000, department = 'Marketing' 
-WHERE employee_id = 1234
+CREATe TABLE PERSONNE (
+    nom VARCHAR,
+    prenom VARCHAR,
+    id int primary key
+)

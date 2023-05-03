@@ -38,6 +38,7 @@ void yyerror(const char*);
 "UNIQUE"     	{ printf("%s UNIQUE\n", yytext);  return UNIQUE; }
 "FOREIGN KEY"   { printf("%s FOREIGN KEY\n", yytext);  return FOREIGN_KEY; }
 "REFERENCES"    { printf("%s REFERENCES\n", yytext);  return REFERENCES; }
+"CONSTRAINT"    { printf("%s CONSTRAINT\n", yytext);  return CONSTRAINT; }
 "ON DELETE"     { printf("%s ON DELETE\n", yytext);  return ON_DELETE; }
 "ON UPDATE"     { printf("%s ON UPDATE\n", yytext);  return ON_UPDATE; }
 "CASCADE"     	{ printf("%s CASCADE\n", yytext);  return CASCADE; }
