@@ -30,6 +30,7 @@ query_statement: delete_statement
                 | create_statement
                 | select_statement
                 | update_statement
+                | error { printf("la commande n'est pas valide\n"); return 0; }
                 ;
 
 /* update_statement */
@@ -49,7 +50,7 @@ select_statement: SELECT select_list FROM table_list where_clause groupby_clause
                     printf("la requête SELECT est valide. Nombre de champs sélectionnés: %d\n", selected_field_count);
                     selected_field_count = 0;
                 }
-                | SELECT select_list error table_list where_clause groupby_clause orderby_clause limit_clause { printf("lexème 'FROM' manquant\n"); return 0; } 
+                | SELECT select_list error error where_clause groupby_clause orderby_clause limit_clause { printf("lexème 'FROM' manquant\n"); return 0; } 
 
 where_clause: %empty | WHERE condition_list
     ;

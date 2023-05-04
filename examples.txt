@@ -69,6 +69,12 @@ UPDATE SET salary = 60000 WHERE employee_id = 1234;
 
 UPDATE test salary = 60000 WHERE employee_id = 1234;
 
+SELECT department, COUNT(*) from where GROUP BY department;
+
+SELECT department, COUNT(*) where etudiant GROUP BY department;
+
+SELECTIONNER department, COUNT(*) where etudiant GROUP BY department;
+
 DELETE FROM Customers WHERE (CustomerName='Alfreds Futterkiste' and (t=23)
 
 DELETE b, v FROM  WHERE b = '1976-09-28';
